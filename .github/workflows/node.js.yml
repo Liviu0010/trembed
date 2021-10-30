@@ -19,8 +19,14 @@ jobs:
 
     steps:
     - uses: actions/checkout@v2
+    - name: Install Node
+      uses: actions/setup-node@v1
+      with:
+        node-version: '16.x'
+    - name: Install dependencies
+      run: npm install
     - name: ssh deploy
-    - uses: easingthemes/ssh-deploy@main
+      uses: easingthemes/ssh-deploy@main
     env:
           SSH_PRIVATE_KEY: ${{ secrets.SERVER_SSH_KEY }}
           ARGS: "-rltgoDzvO --delete"
