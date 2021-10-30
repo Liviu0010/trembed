@@ -194,7 +194,7 @@ client.on('interactionCreate', async interaction => {
                 fs.unlinkSync(fileName);
             }
             catch(ex){}
-            interaction.editReply("Cannot embed video. Try making it shorter.");
+            interaction.editReply("Cannot embed video. Perhaps make it shorter.");
         }
     }
 });
