@@ -4,6 +4,7 @@
   "description": "Tr(im)Embed - Discord bot which uses yt-dpl to trim and embed videos from the internet on Discord.",
   "main": "index.js",
   "scripts": {
+    "start": "node index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "Liviu",
