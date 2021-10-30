@@ -164,6 +164,12 @@ client.on('interactionCreate', async interaction => {
             return;
         }
 
+        if(convertToSeconds(end) <= convertToSeconds(start))
+        {
+            interaction.editReply("Select a valid time range.");
+            return;
+        }
+
         try{
             let earlyStart = getFrameSafeTime(start);
             let trueStart = convertToSeconds(start);
