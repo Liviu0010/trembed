@@ -41,5 +41,5 @@ jobs:
         host: ${{secrets.REMOTE_HOST}}
         username: ${{secrets.REMOTE_USER}}
         key: ${{secrets.SERVER_SSH_KEY}}
-        script: npm install
+        script: cd ${{ secrets.REMOTE_TARGET }}; npm install
     
