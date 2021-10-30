@@ -27,7 +27,7 @@ jobs:
       run: npm install
     - name: ssh deploy
       uses: easingthemes/ssh-deploy@main
-    env:
+      env:
           SSH_PRIVATE_KEY: ${{ secrets.SERVER_SSH_KEY }}
           ARGS: "-rltgoDzvO --delete"
           SOURCE: ""
