@@ -1,46 +1,23 @@
 import Video from './video.mjs';
 import BotConstants from './constants.mjs';
-/*
-const fs = require("fs");
-const { REST } = require("@discordjs/rest");
-const { Routes } = require("discord-api-types/v9");
-const { Client, Intents, Constants, MessageAttachment } = require("discord.js");
-*/
 
 import fs from 'fs';
 import { REST } from '@discordjs/rest';
-import { Routes } from 'discord-api-types/v9';
-import { Client, Intents, Constants } from 'discord.js';
+import { Client, Intents } from 'discord.js';
 
 const rest = new REST({version: "9"}).setToken(BotConstants.TOKEN);
 const client = new Client({ 
     intents: [Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_MESSAGES]
  });
 
- const command = {
-         name: "embed",
-         description: "Embeds a video on discord.",
-         options: [
-             {
-                 name: "url",
-                 description: "The link to the video.",
-                 required: true,
-                 type: Constants.ApplicationCommandOptionTypes.STRING
-             },
-             {
-                name: "start",
-                description: "Start time. Can be in seconds or hh:mm:ss.",
-                required: true,
-                type: Constants.ApplicationCommandOptionTypes.STRING
-            },
-            {
-                name: "end",
-                description: "End time. Can be in seconds or hh:mm:ss.",
-                required: true,
-                type: Constants.ApplicationCommandOptionTypes.STRING
-            }
-         ]
-     };
+function registerCommands(forAppLevel) {
+    BotConstants.COMMANDS.forEach(c => {
+        if(forAppLevel)
+            client.application.commands.create(c);
+        else
+            client.guilds.cache.get("guildId").commands.create(c);
+    });
+}
 
 client.on('ready', () => {
     console.log(`Logged in as ${client.user.tag}!`);
@@ -97,8 +74,8 @@ client.on('interactionCreate', async interaction => {
 });
 
 client.on("ready", () => {
-    //client.guilds.cache.get("guildId").commands.create(command);
-    //client.application.commands.create(command);
+    //registerCommands(false);
+    //registerCommands(true);
 });
 
 client.login(BotConstants.TOKEN);
