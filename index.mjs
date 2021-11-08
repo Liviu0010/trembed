@@ -43,32 +43,39 @@ client.on('interactionCreate', async interaction => {
             interaction.editReply("Select a valid time range.");
             return;
         }
+        
+        let fileName = "";
+        let earlyStart = Video.getFrameSafeTime(start);
+        let trueStart = Video.convertToSeconds(start);
 
         try{
-            let earlyStart = Video.getFrameSafeTime(start);
-            let trueStart = Video.convertToSeconds(start);
-            let fileName = await Video.downloadVideo(url, earlyStart, end);
+            interaction.editReply("Downloading video...");
+
+            fileName = await Video.downloadVideo(url, earlyStart, end);
+
+            interaction.editReply("Video dowloaded.\nProcessing video...");
 
             if(trueStart != earlyStart)
                 await Video.trimProperly(fileName, trueStart);
 
             await Video.fitSize(fileName);
-
-            interaction.editReply({
+            await interaction.editReply({
                 content: `<${url}> from ${start} to ${end}`,
                 files: [{
                     attachment: fileName
                 }]
-            })
-            .then(() => fs.unlinkSync(fileName));
+            });
+            fs.unlink(fileName, () => {});
         }
         catch(exception) {
 			console.log(exception);
-            try{
-                fs.unlinkSync(fileName);
+            try {
+                await interaction.editReply("Cannot embed video.");
             }
-            catch(ex){}
-            interaction.editReply("Cannot embed video. Perhaps make it shorter.");
+            catch(exc) {console.log(exc);}
+        }
+        finally{
+            fs.unlink(fileName, () => {});  //may log errors in the future
         }
     }
 });
