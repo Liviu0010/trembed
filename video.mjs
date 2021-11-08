@@ -23,7 +23,7 @@ export function getFrameSafeTime(start) {
 
 export async function downloadVideo(url, start, end) { 
     return new Promise((resolve, reject) => {
-        const fileName = (new Date()).getTime() + ".mp4";
+        const fileName = Constants.VIDEO_DIR+'/'+(new Date()).getTime() + ".mp4";
         const res = yt.createYtDlpAsProcess(url, {
             f: "best[protocol!*=dash][height<=360]",
             output: fileName,
